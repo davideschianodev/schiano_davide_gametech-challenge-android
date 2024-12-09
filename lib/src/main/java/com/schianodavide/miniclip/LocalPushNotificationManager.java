@@ -68,4 +68,21 @@ public class LocalPushNotificationManager {
             }
         }
     }
+
+    public static void removeNotifications(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        for (int i = 1; i < 6; i++) {
+            Intent intent = new Intent(context, LocalPushNotificationReceiver.class);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    context, i, intent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            if (pendingIntent != null && alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+                pendingIntent.cancel();
+            }
+        }
+    }
 }
